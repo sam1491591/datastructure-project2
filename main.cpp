@@ -10,11 +10,11 @@ using namespace std;
 
 int rx, ry;
 int m, n, b;
-vector < vector < int > > floor2;
-vector<vector<int> > dis;
-vector<vector<int> > visited2;
-vector<vector<int> > push;
-vector<vector<int> > visited;
+int floor2[1000][1005] = { 0 };
+int dis[1000][1005] = { 0 };
+int visited2[1000][1005] = { 0 };
+int push[1000][1005] = { 0 };
+int visited[1000][1005] = { 0 };
 
 class tilt {
 	friend class map;
@@ -90,26 +90,26 @@ public:
 	//int dis[1000][1005] = { 0 };
 	//int visited2[1000][1005] = { 0 };
 
-	
+
 
 	//int push[1000][1005] = { 0 };
 	//int visited[1000][1005] = { 0 };
 };
-
+/*
 void initial() {
-		vector < vector < int > > bitch(m + 1, vector<int>(n + 1, 0));
-		floor2 = bitch;
-		dis = bitch;
-		visited = bitch;
-		visited2 = bitch;
-		push = bitch;
-	}
-
+	vector < vector < int > > bitch(m + 1, vector<int>(n + 1, 0));
+	floor2 = bitch;
+	dis = bitch;
+	visited = bitch;
+	visited2 = bitch;
+	push = bitch;
+}
+*/
 
 int main(int argc, char* argv[])
 {
 	//cout << "no file/n";
-	
+	/*
 	fstream input(argv[1], ios::in);
 	fstream output("final.path", ios::out);
 	if (!input)
@@ -120,11 +120,11 @@ int main(int argc, char* argv[])
 	{
 		cout << "can't output your answer";
 	}
-	
-	input >> m >> n >> b;
+	*/
+	cin >> m >> n >> b;
 	map floor1;
 	//cout << "!!!"<< endl;
-	initial();
+	//initial();
 	//floor1.read_floor(m,n,argc,argv);
 	char input1;
 	for (int i = 0; i < m; i++)
@@ -141,7 +141,7 @@ int main(int argc, char* argv[])
 			*/
 			//else
 			//{
-			input >> input1;
+			cin >> input1;
 			/*
 			if (input1 == '\n')
 				cin >> input1;
@@ -180,19 +180,19 @@ int main(int argc, char* argv[])
 			pathinverse.pop_back();
 			path.push_back(last);
 		}
+		//cout << tmp.x<<" "<<tmp.y << endl;
 		floor1.findpath(tmp, tmpbattery, m, n);
-		//cout << "not clear" << endl;
 		//floor1.outputvis(m, n);
 	}
 	//floor1.outputvis(m, n);
-	output << path.size() << endl;
+	cout << path.size() << endl;
 	for (auto n : path)
 	{
-		output << n.x << " " << n.y << endl;
+		cout << n.x << " " << n.y << endl;
 	}
 
-	input.close();
-	output.close();
+	//input.close();
+	//output.close();
 }
 
 void map::distancecheck(tilt a, int m, int n)
@@ -209,9 +209,10 @@ void map::distancecheck(tilt a, int m, int n)
 		visited[s.x][s.y] = 1;
 		//cout << s.x << " " << s.y << endl;
 		q.pop();
-		if (visited[s.x][s.y - 1] == 0 && floor2[s.x][s.y - 1] == 0 && s.y > 0)
+		if (s.y > 0 && visited[s.x][s.y - 1] == 0 && floor2[s.x][s.y - 1] == 0)
 		{
 			tilt up = tilt(s.x, s.y - 1);
+			//cout <<"up: "<< up.x << " " << up.y << endl;
 			dis[up.x][up.y] = dis[s.x][s.y] + 1;
 			if (push[up.x][up.y] == 0)
 			{
@@ -219,9 +220,10 @@ void map::distancecheck(tilt a, int m, int n)
 				q.push(up);
 			}
 		}
-		if (visited[s.x][s.y + 1] == 0 && floor2[s.x][s.y + 1] == 0 && s.y < n - 1)
+		if (s.y < n - 1 && visited[s.x][s.y + 1] == 0 && floor2[s.x][s.y + 1] == 0)
 		{
 			tilt down = tilt(s.x, s.y + 1);
+			//cout <<"down: "<< down.x << " " << down.y << endl;
 			dis[down.x][down.y] = dis[s.x][s.y] + 1;
 			if (push[down.x][down.y] == 0)
 			{
@@ -229,9 +231,10 @@ void map::distancecheck(tilt a, int m, int n)
 				q.push(down);
 			}
 		}
-		if (visited[s.x - 1][s.y] == 0 && floor2[s.x - 1][s.y] == 0 && s.x > 0)
+		if (s.x > 0 && visited[s.x - 1][s.y] == 0 && floor2[s.x - 1][s.y] == 0)
 		{
 			tilt left = tilt(s.x - 1, s.y);
+			//cout <<"left: "<< left.x << " " << left.y << endl;
 			dis[left.x][left.y] = dis[s.x][s.y] + 1;
 			if (push[left.x][left.y] == 0)
 			{
@@ -239,9 +242,10 @@ void map::distancecheck(tilt a, int m, int n)
 				q.push(left);
 			}
 		}
-		if (visited[s.x + 1][s.y] == 0 && floor2[s.x + 1][s.y] == 0 && s.x < m - 1)
+		if (s.x < m - 1 && visited[s.x + 1][s.y] == 0 && floor2[s.x + 1][s.y] == 0)
 		{
 			tilt right = tilt(s.x + 1, s.y);
+			//cout <<"right: "<< right.x << " " << right.y << endl;
 			dis[right.x][right.y] = dis[s.x][s.y] + 1;
 			if (push[right.x][right.y] == 0)
 			{
@@ -252,156 +256,225 @@ void map::distancecheck(tilt a, int m, int n)
 	}
 }
 
+tilt findpath_temp = tilt(0, 0);
+
 void map::findpath(tilt a, int b, int m, int n)
 {
+	findpath_temp = a;
 	//cout << a.x <<" "<< a.y << endl;
+	while (true)
+	{
 	//cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<b<<endl;
-	if ((dis[a.x][a.y] == b) || (dis[a.x][a.y] == b + 1))
-	{
-		visited2[a.x][a.y]++;
-		goback(a);
-	}
-	else
-	{
-		visited2[a.x][a.y]++;
-		if ((dis[a.x + 1][a.y] > dis[a.x][a.y]) && (visited2[a.x + 1][a.y] == min(min(visited2[a.x][a.y + 1], visited2[a.x][a.y - 1]), min(visited2[a.x + 1][a.y], visited2[a.x - 1][a.y]))) && (a.x < m - 1))
+		if ((dis[findpath_temp.x][findpath_temp.y] == b) || (dis[findpath_temp.x][findpath_temp.y] == b + 1))
 		{
-			//cout << "find down!\n";
-			b--;
-			tilt t = tilt(a.x + 1, a.y);
-			path.push_back(t);
-			findpath(t, b, m, n);
+			visited2[findpath_temp.x][findpath_temp.y]++;
+			goback(findpath_temp);
+			return;
 		}
-		else if ((dis[a.x - 1][a.y] > dis[a.x][a.y]) && (visited2[a.x - 1][a.y] == min(min(visited2[a.x][a.y + 1], visited2[a.x][a.y - 1]), min(visited2[a.x + 1][a.y], visited2[a.x - 1][a.y]))) && (a.x > 0))
+		else
 		{
-			//cout << "find up!\n";
-			b--;
-			tilt t = tilt(a.x - 1, a.y);
-			path.push_back(t);
-			findpath(t, b, m, n);
+			visited2[findpath_temp.x][findpath_temp.y]++;
+			if ((dis[findpath_temp.x + 1][findpath_temp.y] > dis[findpath_temp.x][findpath_temp.y]) && (visited2[findpath_temp.x + 1][findpath_temp.y] == min(min(visited2[findpath_temp.x][findpath_temp.y + 1], visited2[findpath_temp.x][findpath_temp.y - 1]), min(visited2[findpath_temp.x + 1][findpath_temp.y], visited2[findpath_temp.x - 1][findpath_temp.y]))) && (findpath_temp.x < m - 1))
+			{
+				//cout << "find down!\n";
+				b--;
+				findpath_temp.x += 1;
+				path.push_back(findpath_temp);
+			}
+			else if ((dis[findpath_temp.x - 1][findpath_temp.y] > dis[findpath_temp.x][findpath_temp.y]) && (visited2[findpath_temp.x - 1][findpath_temp.y] == min(min(visited2[findpath_temp.x][findpath_temp.y + 1], visited2[findpath_temp.x][findpath_temp.y - 1]), min(visited2[findpath_temp.x + 1][findpath_temp.y], visited2[findpath_temp.x - 1][findpath_temp.y]))) && (findpath_temp.x < m - 1))
+			{
+				//cout << "find up!\n";
+				b--;
+				findpath_temp.x -= 1;
+				path.push_back(findpath_temp);
+			}
+			else if ((dis[findpath_temp.x][findpath_temp.y + 1] > dis[findpath_temp.x][findpath_temp.y]) && (visited2[findpath_temp.x][findpath_temp.y + 1] == min(min(visited2[findpath_temp.x][findpath_temp.y + 1], visited2[findpath_temp.x][findpath_temp.y - 1]), min(visited2[findpath_temp.x + 1][findpath_temp.y], visited2[findpath_temp.x - 1][findpath_temp.y]))) && (findpath_temp.x < m - 1))
+			{
+				//cout << "find right!\n";
+				b--;
+				findpath_temp.y += 1;
+				path.push_back(findpath_temp);
+			}
+			else if ((dis[findpath_temp.x][findpath_temp.y - 1] > dis[findpath_temp.x][findpath_temp.y]) && (visited2[findpath_temp.x][findpath_temp.y - 1] == min(min(visited2[findpath_temp.x][findpath_temp.y + 1], visited2[findpath_temp.x][findpath_temp.y - 1]), min(visited2[findpath_temp.x + 1][findpath_temp.y], visited2[findpath_temp.x - 1][findpath_temp.y]))) && (findpath_temp.x < m - 1))
+			{
+				//cout << "find left!\n";
+				b--;
+				findpath_temp.y -= 1;
+				path.push_back(findpath_temp);
+			}
+			else if (visited2[findpath_temp.x + 1][findpath_temp.y] == min(min(visited2[findpath_temp.x][findpath_temp.y + 1], visited2[findpath_temp.x][findpath_temp.y - 1]), min(visited2[findpath_temp.x + 1][findpath_temp.y], visited2[findpath_temp.x - 1][findpath_temp.y])) && (findpath_temp.x < m - 1))
+			{
+				//cout << "Find down!\n";
+				b--;
+				findpath_temp.x += 1;
+				path.push_back(findpath_temp);
+			}
+			else if (visited2[findpath_temp.x - 1][findpath_temp.y] == min(min(visited2[findpath_temp.x][findpath_temp.y + 1], visited2[findpath_temp.x][findpath_temp.y - 1]), min(visited2[findpath_temp.x + 1][findpath_temp.y], visited2[findpath_temp.x - 1][findpath_temp.y])) && (findpath_temp.x < m - 1))
+			{
+				//cout << "Find up!\n";
+				b--;
+				findpath_temp.x -= 1;
+				path.push_back(findpath_temp);
+			}
+			else if (visited2[findpath_temp.x][findpath_temp.y + 1] == min(min(visited2[findpath_temp.x][findpath_temp.y + 1], visited2[findpath_temp.x][findpath_temp.y - 1]), min(visited2[findpath_temp.x + 1][findpath_temp.y], visited2[findpath_temp.x - 1][findpath_temp.y])) && (findpath_temp.x < m - 1))
+			{
+				//cout << "Find right!\n";
+				b--;
+				findpath_temp.y += 1;
+				path.push_back(findpath_temp);
+			}
+			else if (visited2[findpath_temp.x][findpath_temp.y - 1] == min(min(visited2[findpath_temp.x][findpath_temp.y + 1], visited2[findpath_temp.x][findpath_temp.y - 1]), min(visited2[findpath_temp.x + 1][findpath_temp.y], visited2[findpath_temp.x - 1][findpath_temp.y])) && (findpath_temp.x < m - 1))
+			{
+				//cout << "Find left!\n";
+				b--;
+				findpath_temp.y -= 1;
+				path.push_back(findpath_temp);
+			}
 		}
-		else if ((dis[a.x][a.y + 1] > dis[a.x][a.y]) && (visited2[a.x][a.y + 1] == min(min(visited2[a.x][a.y + 1], visited2[a.x][a.y - 1]), min(visited2[a.x + 1][a.y], visited2[a.x - 1][a.y]))) && (a.y < n - 1))
-		{
-			//cout << "find right!\n";
-			b--;
-			tilt t = tilt(a.x, a.y + 1);
-			path.push_back(t);
-			findpath(t, b, m, n);
-		}
-		else if ((dis[a.x][a.y - 1] > dis[a.x][a.y]) && (visited2[a.x][a.y - 1] == min(min(visited2[a.x][a.y + 1], visited2[a.x][a.y - 1]), min(visited2[a.x + 1][a.y], visited2[a.x - 1][a.y]))) && (a.y > 0))
-		{
-			//cout << "find left!\n";
-			b--;
-			tilt t = tilt(a.x, a.y - 1);
-			path.push_back(t);
-			findpath(t, b, m, n);
-		}
-		else if (visited2[a.x + 1][a.y] == min(min(visited2[a.x][a.y + 1], visited2[a.x][a.y - 1]), min(visited2[a.x + 1][a.y], visited2[a.x - 1][a.y])) && (a.x < m - 1))
-		{
-			//cout << "Find down!\n";
-			b--;
-			tilt t = tilt(a.x + 1, a.y);
-			path.push_back(t);
-			findpath(t, b, m, n);
-		}
-		else if (visited2[a.x - 1][a.y] == min(min(visited2[a.x][a.y + 1], visited2[a.x][a.y - 1]), min(visited2[a.x + 1][a.y], visited2[a.x - 1][a.y])) && (a.x > 0))
-		{
-			//cout << "Find up!\n";
-			b--;
-			tilt t = tilt(a.x - 1, a.y);
-			path.push_back(t);
-			findpath(t, b, m, n);
-		}
-		else if (visited2[a.x][a.y + 1] == min(min(visited2[a.x][a.y + 1], visited2[a.x][a.y - 1]), min(visited2[a.x + 1][a.y], visited2[a.x - 1][a.y])) && (a.y < n - 1))
-		{
-			//cout << "Find right!\n";
-			b--;
-			tilt t = tilt(a.x, a.y + 1);
-			path.push_back(t);
-			findpath(t, b, m, n);
-		}
-		else if (visited2[a.x][a.y - 1] == min(min(visited2[a.x][a.y + 1], visited2[a.x][a.y - 1]), min(visited2[a.x + 1][a.y], visited2[a.x - 1][a.y])) && (a.y > 0))
-		{
-			//cout << "Find left!\n";
-			b--;
-			tilt t = tilt(a.x, a.y - 1);
-			path.push_back(t);
-			findpath(t, b, m, n);
-		}
+
 	}
 }
+
+tilt goback_temp = tilt(0, 0);
 
 void map::goback(tilt a)
 {
-	//cout << a.x <<" "<< a.y << endl;
-	if (a.x == rx && a.y == ry)
-		return;
-	if ((dis[a.x][a.y + 1] < dis[a.x][a.y] && (dis[a.x][a.y + 1] >= 0)) && (visited[a.x][a.y + 1] == min(min(visited2[a.x][a.y + 1], visited2[a.x][a.y - 1]), min(visited2[a.x + 1][a.y], visited2[a.x - 1][a.y]))))
+	goback_temp = a;
+	while (true)
 	{
-		//cout << "go right!\n";
-		tilt t = tilt(a.x, a.y + 1);
-		visited2[t.x][t.y]++;
-		path.push_back(t);
-		goback(t);
-	}
-	else if ((dis[a.x][a.y - 1] < dis[a.x][a.y] && (dis[a.x][a.y - 1] >= 0)) && (visited[a.x][a.y - 1] == min(min(visited2[a.x][a.y + 1], visited2[a.x][a.y - 1]), min(visited2[a.x + 1][a.y], visited2[a.x - 1][a.y]))))
-	{
-		//cout << "go left!\n";
-		tilt t = tilt(a.x, a.y - 1);
-		visited2[t.x][t.y]++;
-		path.push_back(t);
-		goback(t);
-	}
-	else if ((dis[a.x + 1][a.y] < dis[a.x][a.y] && (dis[a.x + 1][a.y] >= 0)) && (visited[a.x + 1][a.y] == min(min(visited2[a.x][a.y + 1], visited2[a.x][a.y - 1]), min(visited2[a.x + 1][a.y], visited2[a.x - 1][a.y]))))
-	{
-		//cout << "go down!\n";
-		tilt t = tilt(a.x + 1, a.y);
-		visited2[t.x][t.y]++;
-		path.push_back(t);
-		goback(t);
-	}
-	else if ((dis[a.x - 1][a.y] < dis[a.x][a.y] && (dis[a.x - 1][a.y] >= 0)) && (visited[a.x - 1][a.y] == min(min(visited2[a.x][a.y + 1], visited2[a.x][a.y - 1]), min(visited2[a.x + 1][a.y], visited2[a.x - 1][a.y]))))
-	{
-		//cout << "go up!\n";
-		tilt t = tilt(a.x - 1, a.y);
-		visited2[t.x][t.y]++;
-		path.push_back(t);
-		goback(t);
-	}
-	else if ((dis[a.x][a.y + 1] < dis[a.x][a.y] && (dis[a.x][a.y + 1] >= 0)))
-	{
-		//cout << "go right!\n";
-		tilt t = tilt(a.x, a.y + 1);
-		visited2[t.x][t.y]++;
-		path.push_back(t);
-		goback(t);
-	}
-	else if ((dis[a.x][a.y - 1] < dis[a.x][a.y] && (dis[a.x][a.y - 1] >= 0)))
-	{
-		//cout << "go left!\n";
-		tilt t = tilt(a.x, a.y - 1);
-		visited2[t.x][t.y]++;
-		path.push_back(t);
-		goback(t);
-	}
-	else if ((dis[a.x + 1][a.y] < dis[a.x][a.y] && (dis[a.x + 1][a.y] >= 0)))
-	{
-		//cout << "go down!\n";
-		tilt t = tilt(a.x + 1, a.y);
-		visited2[t.x][t.y]++;
-		path.push_back(t);
-		goback(t);
-	}
-	else if ((dis[a.x - 1][a.y] < dis[a.x][a.y] && (dis[a.x - 1][a.y] >= 0)))
-	{
-		//cout << "go up!\n";
-		tilt t = tilt(a.x - 1, a.y);
-		visited2[t.x][t.y]++;
-		path.push_back(t);
-		goback(t);
+		//cout << goback_temp.x <<" "<< goback_temp.y << endl;
+		if (goback_temp.x == rx && goback_temp.y == ry)
+			return;
+		if ((dis[goback_temp.x][goback_temp.y + 1] < dis[goback_temp.x][goback_temp.y] && (dis[goback_temp.x][goback_temp.y + 1] >= 0)) && (visited[goback_temp.x][goback_temp.y + 1] == min(min(visited2[goback_temp.x][goback_temp.y + 1], visited2[goback_temp.x][goback_temp.y - 1]), min(visited2[goback_temp.x + 1][goback_temp.y], visited2[goback_temp.x - 1][goback_temp.y]))))
+		{
+			//cout << "go right!\n";
+			goback_temp.y += 1;
+			visited2[goback_temp.x][goback_temp.y]++;
+			path.push_back(goback_temp);
+		}
+		else if ((dis[goback_temp.x][goback_temp.y - 1] < dis[goback_temp.x][goback_temp.y] && (dis[goback_temp.x][goback_temp.y - 1] >= 0)) && (visited[goback_temp.x][goback_temp.y - 1] == min(min(visited2[goback_temp.x][goback_temp.y + 1], visited2[goback_temp.x][goback_temp.y - 1]), min(visited2[goback_temp.x + 1][goback_temp.y], visited2[goback_temp.x - 1][goback_temp.y]))))
+		{
+			//cout << "go left!\n";
+			goback_temp.y -= 1;
+			visited2[goback_temp.x][goback_temp.y]++;
+			path.push_back(goback_temp);
+		}
+		else if ((dis[goback_temp.x + 1][goback_temp.y] < dis[goback_temp.x][goback_temp.y] && (dis[goback_temp.x + 1][goback_temp.y] >= 0)) && (visited[goback_temp.x + 1][goback_temp.y] == min(min(visited2[goback_temp.x][goback_temp.y + 1], visited2[goback_temp.x][goback_temp.y - 1]), min(visited2[goback_temp.x + 1][goback_temp.y], visited2[goback_temp.x - 1][goback_temp.y]))))
+		{
+			//cout << "go down!\n";
+			goback_temp.x += 1;
+			visited2[goback_temp.x][goback_temp.y]++;
+			path.push_back(goback_temp);
+		}
+		else if ((dis[goback_temp.x - 1][goback_temp.y] < dis[goback_temp.x][goback_temp.y] && (dis[goback_temp.x - 1][goback_temp.y] >= 0)) && (visited[goback_temp.x - 1][goback_temp.y] == min(min(visited2[goback_temp.x][goback_temp.y + 1], visited2[goback_temp.x][goback_temp.y - 1]), min(visited2[goback_temp.x + 1][goback_temp.y], visited2[goback_temp.x - 1][goback_temp.y]))))
+		{
+			//cout << "go up!\n";
+			goback_temp.x -= 1;
+			visited2[goback_temp.x][goback_temp.y]++;
+			path.push_back(goback_temp);
+		}
+		else if ((dis[goback_temp.x][goback_temp.y + 1] < dis[goback_temp.x][goback_temp.y] && (dis[goback_temp.x][goback_temp.y + 1] >= 0)))
+		{
+			//cout << "go right!\n";
+			goback_temp.y += 1;
+			visited2[goback_temp.x][goback_temp.y]++;
+			path.push_back(goback_temp);
+		}
+		else if ((dis[goback_temp.x][goback_temp.y - 1] < dis[goback_temp.x][goback_temp.y] && (dis[goback_temp.x][goback_temp.y - 1] >= 0)))
+		{
+			//cout << "go left!\n";
+			goback_temp.y -= 1;
+			visited2[goback_temp.x][goback_temp.y]++;
+			path.push_back(goback_temp);
+		}
+		else if ((dis[goback_temp.x + 1][goback_temp.y] < dis[goback_temp.x][goback_temp.y] && (dis[goback_temp.x + 1][goback_temp.y] >= 0)))
+		{
+			//cout << "go down!\n";
+			goback_temp.x += 1;
+			visited2[goback_temp.x][goback_temp.y]++;
+			path.push_back(goback_temp);
+		}
+		else if ((dis[goback_temp.x - 1][goback_temp.y] < dis[goback_temp.x][goback_temp.y] && (dis[goback_temp.x - 1][goback_temp.y] >= 0)))
+		{
+			//cout << "go up!\n";
+			goback_temp.x -= 1;
+			visited2[goback_temp.x][goback_temp.y]++;
+			path.push_back(goback_temp);
+		}
+
 	}
 }
 
+tilt gobackinverse_temp = tilt(0, 0);
+
+void map::gobackinverse(tilt a)
+{
+	gobackinverse_temp = a;
+	while (true)
+	{
+		//cout << gobackinverse_temp.x <<" "<< gobackinverse_temp.y << endl;
+		if (gobackinverse_temp.x == rx && gobackinverse_temp.y == ry)
+			return;
+		if ((dis[gobackinverse_temp.x][gobackinverse_temp.y + 1] < dis[gobackinverse_temp.x][gobackinverse_temp.y] && (dis[gobackinverse_temp.x][gobackinverse_temp.y + 1] >= 0)) && (visited[gobackinverse_temp.x][gobackinverse_temp.y + 1] == min(min(visited2[gobackinverse_temp.x][gobackinverse_temp.y + 1], visited2[gobackinverse_temp.x][gobackinverse_temp.y - 1]), min(visited2[gobackinverse_temp.x + 1][gobackinverse_temp.y], visited2[gobackinverse_temp.x - 1][gobackinverse_temp.y]))))
+		{
+			//cout << "go right!\n";
+			gobackinverse_temp.y += 1;
+			visited2[gobackinverse_temp.x][gobackinverse_temp.y]++;
+			pathinverse.push_back(gobackinverse_temp);
+		}
+		else if ((dis[gobackinverse_temp.x][gobackinverse_temp.y - 1] < dis[gobackinverse_temp.x][gobackinverse_temp.y] && (dis[gobackinverse_temp.x][gobackinverse_temp.y - 1] >= 0)) && (visited[gobackinverse_temp.x][gobackinverse_temp.y - 1] == min(min(visited2[gobackinverse_temp.x][gobackinverse_temp.y + 1], visited2[gobackinverse_temp.x][gobackinverse_temp.y - 1]), min(visited2[gobackinverse_temp.x + 1][gobackinverse_temp.y], visited2[gobackinverse_temp.x - 1][gobackinverse_temp.y]))))
+		{
+			//cout << "go left!\n";
+			gobackinverse_temp.y -= 1;
+			visited2[gobackinverse_temp.x][gobackinverse_temp.y]++;
+			pathinverse.push_back(gobackinverse_temp);
+		}
+		else if ((dis[gobackinverse_temp.x + 1][gobackinverse_temp.y] < dis[gobackinverse_temp.x + 1][gobackinverse_temp.y] && (dis[gobackinverse_temp.x + 1][gobackinverse_temp.y] >= 0)) && (visited[gobackinverse_temp.x + 1][gobackinverse_temp.y] == min(min(visited2[gobackinverse_temp.x][gobackinverse_temp.y + 1], visited2[gobackinverse_temp.x][gobackinverse_temp.y - 1]), min(visited2[gobackinverse_temp.x + 1][gobackinverse_temp.y], visited2[gobackinverse_temp.x - 1][gobackinverse_temp.y]))))
+		{
+			//cout << "go down!\n";
+			gobackinverse_temp.x += 1;
+			visited2[gobackinverse_temp.x][gobackinverse_temp.y]++;
+			pathinverse.push_back(gobackinverse_temp);
+		}
+		else if ((dis[gobackinverse_temp.x - 1][gobackinverse_temp.y] < dis[gobackinverse_temp.x][gobackinverse_temp.y] && (dis[gobackinverse_temp.x - 1][gobackinverse_temp.y] >= 0)) && (visited[gobackinverse_temp.x - 1][gobackinverse_temp.y] == min(min(visited2[gobackinverse_temp.x][gobackinverse_temp.y + 1], visited2[gobackinverse_temp.x][gobackinverse_temp.y - 1]), min(visited2[gobackinverse_temp.x + 1][gobackinverse_temp.y], visited2[gobackinverse_temp.x - 1][gobackinverse_temp.y]))))
+		{
+			//cout << "go up!\n";
+			gobackinverse_temp.x -= 1;
+			visited2[gobackinverse_temp.x][gobackinverse_temp.y]++;
+			pathinverse.push_back(gobackinverse_temp);
+		}
+		else if ((dis[gobackinverse_temp.x][gobackinverse_temp.y + 1] < dis[gobackinverse_temp.x][gobackinverse_temp.y] && (dis[gobackinverse_temp.x][gobackinverse_temp.y + 1] >= 0)))
+		{
+			//cout << "go right!\n";
+			gobackinverse_temp.y += 1;
+			visited2[gobackinverse_temp.x][gobackinverse_temp.y]++;
+			pathinverse.push_back(gobackinverse_temp);
+		}
+		else if ((dis[gobackinverse_temp.x][gobackinverse_temp.y - 1] < dis[gobackinverse_temp.x][gobackinverse_temp.y] && (dis[gobackinverse_temp.x][gobackinverse_temp.y - 1] >= 0)))
+		{
+			//cout << "go left!\n";
+			gobackinverse_temp.y -= 1;
+			visited2[gobackinverse_temp.x][gobackinverse_temp.y]++;
+			pathinverse.push_back(gobackinverse_temp);
+		}
+		else if ((dis[gobackinverse_temp.x + 1][gobackinverse_temp.y] < dis[gobackinverse_temp.x][gobackinverse_temp.y] && (dis[gobackinverse_temp.x + 1][gobackinverse_temp.y] >= 0)))
+		{
+			//cout << "go down!\n";
+			gobackinverse_temp.x += 1;
+			visited2[gobackinverse_temp.x][gobackinverse_temp.y]++;
+			pathinverse.push_back(gobackinverse_temp);
+		}
+		else if ((dis[gobackinverse_temp.x - 1][gobackinverse_temp.y] < dis[gobackinverse_temp.x][gobackinverse_temp.y] && (dis[gobackinverse_temp.x - 1][gobackinverse_temp.y] >= 0)))
+		{
+			//cout << "go up!\n";
+			gobackinverse_temp.x -= 1;
+			visited2[gobackinverse_temp.x][gobackinverse_temp.y]++;
+			pathinverse.push_back(gobackinverse_temp);
+		}
+
+	}
+}
+/*
 void map::gobackinverse(tilt a)
 {
 	//cout << a.x <<" "<< a.y << endl;
@@ -472,3 +545,4 @@ void map::gobackinverse(tilt a)
 		gobackinverse(t);
 	}
 }
+*/
